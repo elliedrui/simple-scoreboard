@@ -34,3 +34,53 @@ resource "aws_dynamodb_table" "this" {
     type = "S"
   }
 }
+
+# Grant the Lambda function read-only access to players' scores.
+data "aws_iam_policy_document" "lambda_trust" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.${data.aws_partition.current.dns_suffix}"]
+    }
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "this" {
+  name               = var.STACK_NAME
+  assume_role_policy = data.aws_iam_policy_document.lambda_trust.json
+}
+
+data "aws_iam_policy_document" "this" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+    resources = ["${aws_cloudwatch_log_group.this.arn}:log-stream:*"]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:BatchGetItem",
+      "dynamodb:Scan",
+      "dynamodb:Query",
+      "dynamodb:ConditionCheckItem",
+    ]
+    resources = [aws_dynamodb_table.this.arn]
+  }
+}
+
+resource "aws_iam_policy" "this" {
+  name   = var.STACK_NAME
+  policy = data.aws_iam_policy_document.this.json
+}
+
+resource "aws_iam_role_policy_attachment" "this" {
+  role       = aws_iam_role.this.name
+  policy_arn = aws_iam_policy.this.arn
+}
