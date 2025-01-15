@@ -84,3 +84,24 @@ resource "aws_iam_role_policy_attachment" "this" {
   role       = aws_iam_role.this.name
   policy_arn = aws_iam_policy.this.arn
 }
+
+# Deploy the Lambda function.
+resource "aws_lambda_function" "this" {
+  function_name    = var.STACK_NAME
+  role             = aws_iam_role.this.arn
+  filename         = "lambda-function.zip"
+  source_code_hash = filebase64sha256("lambda-function.zip")
+  handler          = "lambda_function.lambda_handler"
+  runtime          = "python3.12"
+  architectures    = ["x86_64"]
+
+  logging_config {
+    log_group  = aws_cloudwatch_log_group.this.name
+    log_format = "Text"
+  }
+}
+
+resource "aws_lambda_function_url" "this" {
+  function_name      = aws_lambda_function.this.function_name
+  authorization_type = "NONE"
+}
