@@ -1,2 +1,1 @@
 # simple-scoreboard
-# simple-scoreboard
