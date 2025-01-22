@@ -38,5 +38,8 @@ jobs:
           TF_VAR_STACK_NAME: simple-scoreboard
           TF_VAR_TAGS_ALL: |
             {"Environment": "Development", "Service": "Scorekeeping"}
+          TF_VAR_BUCKET: ${{ secrets.BUCKET || null }}
+          TF_VAR_KEY: ${{ secrets.KEY || null }}
+          TF_VAR_DYNAMODB_TABLE: ${{ secrets.DYNAMODB_TABLE || null }}
       - if: steps.plan.outputs.exitcode == 2
         run: tofu apply -auto-approve -no-color terraform.tfplan
