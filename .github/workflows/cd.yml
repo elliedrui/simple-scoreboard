@@ -30,7 +30,6 @@ jobs:
 
       # Initialize OpenTofu and deploy the stack.
       - uses: opentofu/setup-opentofu@v1.0.2
-      - run: chmod a+x /tmp/*/tofu
       - run: tofu init
       - run: tofu validate -no-color
       - id: plan
