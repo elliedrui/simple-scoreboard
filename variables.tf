@@ -12,5 +12,3 @@ variable "TAGS_ALL" {
   type        = string
   default     = "{}"
 }
-
-
