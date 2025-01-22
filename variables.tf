@@ -12,3 +12,21 @@ variable "TAGS_ALL" {
   type        = string
   default     = "{}"
 }
+
+variable "BUCKET" {
+  description = "Bucket name."
+  type        = string
+  nullable    = false
+}
+
+variable "KEY" {
+  description = "Key name."
+  type        = string
+  nullable    = false
+}
+
+variable "DYNAMODB_TABLE" {
+  description = "DynamoDB table name."
+  type        = string
+  nullable    = false
+}
