@@ -10,9 +10,9 @@ terraform {
 
   # NOTE: Don't forget to change the bucket and table names!
   backend "s3" {
-    bucket         = var.BUCKET
-    key            = var.KEY
-    dynamodb_table = var.DYNAMODB_TABLE
+    bucket         = "${var.BUCKET}"
+    key            = "${var.KEY}"
+    dynamodb_table = "${var.DYNAMODB_TABLE}"
   }
 }
 
