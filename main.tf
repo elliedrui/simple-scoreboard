@@ -26,7 +26,7 @@ data "aws_partition" "current" {}
 # Log app (Lambda function) activity in a CloudWatch log group.
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/lambda/${var.STACK_NAME}"
-  retention_in_days = 3
+  retention_in_days = 365
 }
 
 # Store players' scores in a DynamoDB table.
