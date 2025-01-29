@@ -14,18 +14,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # Use the same hardware architecture and the same Python version
-      # as the Lambda function.
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
       # Build the deployment package.
-      - run: |
-          pip install --no-compile --target build .
-          cd build
-          zip -r ../lambda-function.zip .
+      - uses: actions/checkout@v4
+      - run: zip lambda-function.zip *.py *.html
 
       # Log into AWS.
       - uses: aws-actions/configure-aws-credentials@v4
