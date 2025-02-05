@@ -1,4 +1,5 @@
 from pathlib import Path
+from pprint import pformat
 
 import boto3
 
@@ -22,6 +23,6 @@ def lambda_handler(event, context):
     response = {
         "statusCode": 200,
         "headers": {"Content-Type": "text/html"},
-        "body": template_html.format(scores=scores),
+        "body": template_html.format(scores=scores, event_data=pformat(event)),
     }
     return response
