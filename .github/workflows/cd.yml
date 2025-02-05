@@ -1,10 +1,16 @@
 ---
 name: Continuous Delivery
 
-# Trigger this workflow manually or by pushing commits to any branch.
+# Trigger this workflow manually or after successful testing.
 on:
-  push:
   workflow_dispatch:
+  workflow_run:
+    branches:
+      - main
+    workflows:
+      - Continuous Integration
+    types:
+      - completed
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
